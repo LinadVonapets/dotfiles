@@ -1,0 +1,570 @@
+;=====================================================
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/jaagr/polybar
+;
+;   The README contains alot of information
+;
+;=====================================================
+
+[system]
+
+;; Lenovo Ideaped Gaming 3
+; wired = enp2s0
+; wireless = wlp3s0
+; height = 18
+; font-size = 10
+
+; Acer Nitro
+;monitor = eDP
+; monitor = eDP1
+wired = enp2s0
+wireless = wlo1
+height = 20
+font-size = 10
+
+[colors]
+color0 = ${xrdb:color0}
+color1 = ${xrdb:color1}
+color2 = ${xrdb:color2}
+color3 = ${xrdb:color3}
+color4 = ${xrdb:color4}
+color5 = ${xrdb:color5}
+color6 = ${xrdb:color6}
+color7 = ${xrdb:color7}
+color8 = ${xrdb:color8}
+color9 = ${xrdb:color9}
+color10 = ${xrdb:color10}
+color11 = ${xrdb:color11}
+color12 = ${xrdb:color12}
+color13 = ${xrdb:color13}
+color14 = ${xrdb:color14}
+color15 = ${xrdb:color15}
+
+background = ${xrdb:background}
+foreground-alt = #555
+foreground = ${xrdb:foreground}
+; foreground = ${colors.color10}
+primary = ${colors.color3}
+alert = #bd2c40
+
+[bar/generic]
+
+width = 100%
+height = ${system.height}
+fixed-center = false
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = ${colors.color1}
+
+padding-left = 2
+padding-right = 2
+
+module-margin = 1
+
+;font-0 = "Fira Mono:pixelsize=10;style=Bold;2"
+font-0 = "Input Mono Narrow Black:pixelsize=10;2"
+font-1 = "Font Awesome 6 Free Solid:pixelsize=11;2"
+font-2 = "Font Awesome 6 Brands:pixelsize=11;2"
+font-3 = "Noto Color Emoji:scale=9;2"
+font-4 = "unifont:pixelsize=10;2;antialias=True"
+font-5 = "DejaVu Sans:pixelsize=10;2"
+; font-2 = Wuncon Siji:antialias=false:pixelsize=8;1		# Symbols (CPU, RAM, etc.)
+; font-3 = Noto Sans CJK JP:size=10:antialias=true;0		# (Japanese) Band names, etc.
+
+locale = ru_RU.utf8
+
+enable-ipc = true
+
+cursor-click = pointer
+
+[bar/b0]
+inherit=bar/generic
+
+monitor = ${system.monitor}
+; monitor-strict = false
+
+fixed-center = true
+
+modules-left = xwindow 
+modules-center = date 
+; modules-right = separator cpu memory filesystem bbswitch  battery separator xkeyboard separator volume xbacklight separator date
+modules-right = separator temp_cpu cpu memory battery separator info-trash separator info-mic volume separator
+
+[bar/b1]
+inherit=bar/generic
+
+monitor = ${system.monitor}
+; monitor-strict = false
+
+modules-left = i3
+modules-center = 
+modules-right = separator xkeyboard separator wired-network wireless-network info-ping8888 info-bluebat separator
+; reminder separator 
+tray-position = right
+tray-padding = 2
+tray-foreground = ${colors.foreground}
+bottom = true
+
+scroll-up = i3wm-wsnext
+scroll-down = i3wm-wsprev
+
+[bar/b-window]
+inherit=bar/generic
+
+monitor = ${env:MONITOR:}
+
+modules-left = i3
+modules-center = 
+modules-right = separator memory battery xkeyboard separator date
+; reminder separator 
+; tray-position = right
+; tray-padding = 2
+
+bottom = false
+
+scroll-up = i3wm-wsnext
+scroll-down = i3wm-wsprev
+
+
+[module/reminder]
+type = custom/text
+content = [Shift-Caps]
+
+[module/separator]
+type = custom/text
+; content = 
+content = •
+; content = |
+
+[module/xwindow]
+type = internal/xwindow
+; label = %title:0:40:...%
+label = %title:0:55:...%
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = " "
+format-prefix-foreground = ${colors.color1}
+
+format = <label-layout><label-indicator>
+format-spacing = 0
+
+label-indicator-padding = 0
+label-indicator-margin = 1
+label-indicator-background = ${colors.alert}
+
+; Available tokens:
+;  %layout% %name% %number%  %icon% (unreleased)
+; label-layout = %layout%
+label-layout-padding = 0
+; label-layout-background = #bc99ed
+; label-layout-foreground = #000
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /
+
+; label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+label-mounted = %{F#0a81f5}%{F-} %free%
+label-unmounted = %mountpoint% 0_o
+label-unmounted-foreground = ${colors.foreground-alt}
+
+[module/bbswitch]
+type = custom/script
+exec = ~/.config/polybar/info-bbswitch.sh
+interval = 5
+
+[module/info-bluebat]
+type = custom/script
+exec = ~/.config/polybar/info-bluebat.sh
+interval = 10
+
+[module/info-ping8888]
+type = custom/script
+exec = ~/.config/polybar/info-ping8888.sh
+interval = 3
+
+[module/info-trash]
+type = custom/script
+exec = ~/.config/polybar/info-trash.sh
+interval = 5
+
+click-middle = trash-empty
+
+[module/info-mic]
+type = custom/script
+exec = ~/.config/polybar/info-mic.sh
+interval = 1
+
+click-left = pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+[module/wired-network]
+type = internal/network
+interface = ${system.wired}
+
+label-connected =  %local_ip%%downspeed:9%
+
+; 
+label-disconnected =  ×
+label-disconnected-foreground = ${colors.foreground-alt}
+
+[module/wireless-network]
+type = internal/network
+interface = ${system.wireless}
+
+; Available tags:
+;   <label-connected> (default)
+;   <ramp-signal>
+format-connected = <ramp-signal> <label-connected>
+
+; Available tags:
+;   <label-disconnected> (default)
+format-disconnected = <label-disconnected>
+
+; Available tags:
+;   <label-connected> (default)
+;   <label-packetloss>
+;   <animation-packetloss>
+format-packetloss = <animation-packetloss> <label-connected>
+
+; Available tokens:
+;   %ifname%    [wireless+wired]
+;   %local_ip%  [wireless+wired]
+;   %local_ip6% [wireless+wired]
+;   %essid%     [wireless]
+;   %signal%    [wireless]
+;   %upspeed%   [wireless+wired]
+;   %downspeed% [wireless+wired]
+;   %linkspeed% [wired]
+; Default: %ifname% %local_ip%
+; label-connected = %{A:echo hey && iwconfig | xmessage -file -&:}%essid% %downspeed:9%%{A}
+label-connected = %essid% %downspeed:9%
+; label-connected-foreground = #eefafafa
+label-connected-foreground = ${colors.foreground}
+
+; Available tokens:
+;   %ifname%    [wireless+wired]
+; Default: (none)
+label-disconnected =  ×
+label-disconnected-foreground = #66ffffff
+
+; Available tokens:
+;   %ifname%    [wireless+wired]
+;   %local_ip%  [wireless+wired]
+;   %local_ip6% [wireless+wired]
+;   %essid%     [wireless]
+;   %signal%    [wireless]
+;   %linkspeed% [wired]
+; Default: (none)
+;label-packetloss = %essid%
+;label-packetloss-foreground = #eefafafa
+
+; Only applies if <ramp-signal> is used
+; ramp-signal-0 = x_x
+; ramp-signal-1 = ~_~
+; ramp-signal-2 = г_г
+; ramp-signal-3 = ^_^
+; ramp-signal-4 = owo
+; ramp-signal-5 = 0w0
+; ramp-signal-0 = ×
+; ramp-signal-1 = 
+; ramp-signal-2 = 
+; ramp-signal-3 = 
+; ramp-signal-4 = 
+; ramp-signal-5 = 
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+ramp-signal-5 = 
+; ramp-signal-5 = 
+
+; Only applies if <animation-packetloss> is used
+animation-packetloss-0 = ⚠
+animation-packetloss-0-foreground = #ffa64c
+animation-packetloss-1 = 📶
+animation-packetloss-1-foreground = #000000
+; Framerate in milliseconds
+animation-packetloss-framerate = 500
+
+
+[module/i3]
+type = internal/i3
+format = <label-mode> <label-state>
+index-sort = true
+enable-scroll = false
+wrapping-scroll = false
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = false
+
+label-mode-padding = 1
+label-mode-foreground = ${colors.background}
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+label-focused = %name%
+label-focused-underline= ${colors.primary}
+label-focused-padding = 1
+label-focused-foreground = ${colors.primary}
+label-focused-background = ${colors.color0}
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %name%
+label-unfocused-padding = 1
+
+; visible = Active workspace on unfocused monitor
+label-visible = %name%
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %name%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+format-stopped =
+
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
+
+label-song-maxlen = 40
+label-song-ellipsis = true
+
+
+[module/backlight]
+type = internal/backlight
+
+card = amdgpu_bl0
+
+enable-scroll = true
+
+label = 
+format = <label> <bar>
+
+bar-width = 10
+bar-indicator = |
+bar-indicator-foreground = #ff
+bar-indicator-font = 2
+bar-fill = ─
+bar-fill-font = 2
+bar-fill-foreground = #9f78e1
+bar-empty = ─
+bar-empty-font = 2
+bar-empty-foreground = ${colors.foreground-alt}
+
+
+[module/player-mpris-tail]
+type = custom/script
+exec = ~/.config/polybar/player-mpris-tail.py
+tail = true
+click-left = playerctl previous
+click-right = playerctl next
+click-middle = playerctl play-pause
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+# 
+format-prefix = " "
+format-prefix-foreground = ${colors.color2}
+label = %percentage:2%%
+
+[module/temp_cpu]
+type = internal/temperature
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.color2}
+label = %temperature-c%
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.color3}
+label = %percentage_used%%
+
+[module/eth]
+type = internal/network
+interface = eno1
+interval = 3.0
+
+format-connected-underline = #55aa55
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground}
+label-connected = %local_ip%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+[module/date]
+type = internal/date
+interval = 1
+
+date = %d %b %Y
+date-alt= %a %d.%m.%Y
+time = %H:%M
+time-alt = %H:%M:%S
+
+; format-prefix = " "
+; format-prefix-foreground = ${colors.color4}
+
+label = %date%  %time%
+
+#click-right = LC_ALL=C cal -m | xmessage -file -
+
+[module/volume]
+type = internal/pulseaudio
+
+format-volume = <label-volume> <bar-volume>
+label-volume = 
+label-volume-foreground = ${root.foreground}
+
+format-muted-prefix = " "
+format-muted-foreground = ${root.foreground}
+label-muted = sound muted
+
+bar-volume-width = 10
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #55aa55
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #55aa55
+bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-5 = #f5a70a
+bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-fill = ─
+bar-volume-empty = ─
+; bar-volume-empty = ·
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+;click-right = pavucontrol-qt
+
+[module/battery]
+type = internal/battery
+battery = BAT1
+adapter = ACAD
+full-at = 98
+
+format-charging = <animation-charging> <label-charging>
+
+format-discharging = <ramp-capacity> <label-discharging>
+
+format-full-prefix = " "
+format-full-prefix-foreground = ${colors.color6}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-foreground = ${colors.color3}
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-foreground = ${colors.color6}
+animation-charging-framerate = 750
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 1
+
+label-open = 
+label-open-foreground = ${colors.color1}
+label-close =  cancel
+label-close-foreground = ${colors.color1}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+menu-0-0 = log out
+menu-0-0-exec = i3-msg exit
+menu-0-1 = reboot
+menu-0-1-exec = systemctl reboot
+menu-0-2 = power off
+menu-0-2-exec = systemctl poweroff
+
+[module/temp_cpu0]
+type = internal/temperature
+
+; Seconds to sleep between updates
+; interval = 0.5
+
+; Thermal zone to use
+; To list all the zone types, run 
+; $ for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
+; Default: 0
+thermal-zone = 0
+
+; Full path of temperature sysfs path
+; Use `sensors` to find preferred temperature source, then run
+; $ for i in /sys/class/hwmon/hwmon*/temp*_input; do echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $(readlink -f $i)"; done
+; to find path to desired file
+; Default reverts to thermal zone setting
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input
+
+; Base temperature for where to start the ramp (in degrees celsius)
+; Default: 0
+base-temperature = 20
+
+; Threshold temperature to display warning label (in degrees celsius)
+; Default: 80
+; warn-temperature = 60
+
+[module/temp_chip]
+type = internal/temperature
+
+; Seconds to sleep between updates
+; interval = 0.5
+
+; Thermal zone to use, default: 0
+thermal-zone = 0
+
+; Full path of temperature sysfs path
+; Default reverts to thermal zone setting
+hwmon-path = /sys/devices/virtual/thermal/thermal_zone0/hwmon2/temp1_input
+
+; Base temperature for where to start the ramp (in degrees celsius)
+; Default: 0
+base-temperature = 20
+
+; Threshold temperature to display warning label (in degrees celsius)
+; Default: 80
+; warn-temperature = 60
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+; vim:ft=dosini
