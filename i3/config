@@ -302,7 +302,7 @@ exec --no-startup-id xautolock -time 10 -locker blurlock
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 exec_always --no-startup-id setxkbmap -layout us,ru -option grp:alt_shift_toggle
-exec --no-startup-id $HOME/Programs/Discord/Discord
+exec --no-startup-id discord
 exec --no-startup-id $HOME/Programs/Telegram/Telegram
 
 
@@ -446,3 +446,4 @@ exec_always $HOME/.config/i3/scripts/autoname_workspaces.py &
 exec_always  --no-startup-id $HOME/.config/polybar/launch.sh
 
 exec --no-startup-id xrandr --output eDP --set TearFree on
+#exec --no-startup-id gammastep
