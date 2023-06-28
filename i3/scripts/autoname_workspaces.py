@@ -114,7 +114,8 @@ WINDOW_ICONS = {
     'zoom': fa.icons['comment'],
     'telegram': fa.icons['telegram'],
     'discord': fa.icons['discord'],
-    'pcmanfm': fa.icons['folder-open']
+    'pcmanfm': fa.icons['folder-open'],
+    'vivaldi-stable': fa.icons['globe']
 }
 
 # This icon is used for any application not in the list above
