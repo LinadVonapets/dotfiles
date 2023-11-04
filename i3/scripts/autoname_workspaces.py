@@ -115,7 +115,8 @@ WINDOW_ICONS = {
     'telegram': fa.icons['telegram'],
     'discord': fa.icons['discord'],
     'pcmanfm': fa.icons['folder-open'],
-    'vivaldi-stable': fa.icons['globe']
+    'vivaldi-stable': fa.icons['globe'],
+    'code': fa.icons['code']
 }
 
 # This icon is used for any application not in the list above

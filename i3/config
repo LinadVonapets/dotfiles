@@ -11,9 +11,9 @@ set $terminal kitty
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
 #default_border pixel 1
 default_floating_border normal
-for_window [class="rps_life"] floating enable
+for_window [class="Godot Projects"] floating enable
 for_window [class="^.*"] move position center
- 
+
 # Hide borders
 #hide_edge_borders none
 
@@ -446,4 +446,4 @@ exec_always $HOME/.config/i3/scripts/autoname_workspaces.py &
 exec_always  --no-startup-id $HOME/.config/polybar/launch.sh
 
 exec --no-startup-id xrandr --output eDP --set TearFree on
-#exec --no-startup-id gammastep
+exec --no-startup-id gammastep

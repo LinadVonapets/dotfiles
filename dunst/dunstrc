@@ -201,4 +201,5 @@
     highlight = "#cb8cf4"
 
 [battery]
-    appname = "Power Warning"
+    summary = "Power Manager"
+    highlight = "#cd8cf4"
